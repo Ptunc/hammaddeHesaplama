@@ -1,5 +1,7 @@
 from openpyxl import Workbook, load_workbook
 
+#1mküp içinde kullanılan hammadde kilogramlarının, girilmesi istenen mamülün kilogramıyla oranları bulunur. oranlarla hammaddeler bölünerek mamülün 1 adeti için 
+#kaç kilogram hammadde kullanılıyor hesaplanır.
 def bilgiAlHesapla(cimento, sifirBes, besOniki, su, katki, hammaddeKodlari, hammaddeAdlari, baslangicSatiri):
     toplamHammadde = cimento + sifirBes + besOniki + su + katki
     kod = (input("Mamülün Stok Kodunu Girin: "))
@@ -15,6 +17,7 @@ def bilgiAlHesapla(cimento, sifirBes, besOniki, su, katki, hammaddeKodlari, hamm
         
     return kayitFonksiyonu(kod, oranliCimento, oranliSifirBes, oranliBesOniki, oranliSu, oranliKatki, hammaddeKodlari, hammaddeAdlari, baslangicSatiri)
 
+#hesaplar ve diğer veriler excel dosyasına işlenir.
 def kayitFonksiyonu(kod, oranliCimento, oranliSifirBes, oranliBesOniki, oranliSu, oranliKatki, hammaddeKodlari, hammaddeAdlari, baslangicSatiri):
     hammaddeler = [4]
     hammaddeler = [oranliCimento, oranliSifirBes, oranliBesOniki, oranliKatki]
@@ -28,21 +31,22 @@ def kayitFonksiyonu(kod, oranliCimento, oranliSifirBes, oranliBesOniki, oranliSu
         ws.cell(satir,8).value = hammaddeKodlari[i]
         ws.cell(satir,9).value = "KG" # type: ignore 
         ws.cell(satir,10).value = hammaddeler[i]
-    
-
+#satırın kaldığı yerden devam etmesi için kullanılan return    
     return baslangicSatiri + maddeAdeti
 
+#excel dosyası okuma-yazma moduna alınır. sabitler girilir.
 wb = load_workbook("deneme.xlsx")
 ws = wb.active
 kontrol = 1
 hammaddeAdlari = [4]
 hammaddeKodlari = [4]
-
 hammaddeKodlari = ["C1", "İ05", "İ5-12", "KATKI0006"]
 hammaddeAdlari = ["Çimento", "0-5 İscehisar", "5-12 İscehisar", "Nanoblock Katkı"]
 
 print("------------------Mamül Reçete Otomasyonuna Hoşgeldiniz!----------------")
 baslangicSatiri = int(input("Excel dosyasının kaçıncı satırından başlamak istiyorsunuz?: "))
+
+#seçim yapılır. seçime göre ilgili formüller ve diğer veriler fonksiyona gönderilir.
 while(kontrol):
     print("-----------------------------------------------------------------------")
     secim = int(input("Mamül Türü Seçin:\n 1. Boru\n 2. Baca Tabanı\n 3. Bilezik\n 4. Kapak\n 5. Parke\n 6. Bordür\n 7. Yağmur Oluğu\n 8. Parke İnce\n 9. Çıkış\n"))
